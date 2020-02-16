@@ -10,7 +10,7 @@ def main(file):
     # Computations
 
     # Output file method
-    FileIO.output() # Not implemented yet
+    FileIO.output() # Not implemented yet - enter list name as arg
 
 file = open("studentGrades.txt")
 main(file)
