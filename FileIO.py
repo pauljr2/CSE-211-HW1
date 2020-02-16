@@ -5,13 +5,18 @@
 class FileIO:
     # Reads a file
     def input(file):
-        l = []
+        list = []
         s = file.readline()
         while s != "":
-            l.append(s)
+            # split the line we read in and put it into a list
+            list.append(s.split())
             s = file.readline()
         file.close()
-        return l
+
+        for i in list:
+            print(i)
+
+        return list
     def output(students):
         # inputs a lis with the following format
         # [["Sam", 87.2, 'B'], ["Daniel", 62.0, 'D']]

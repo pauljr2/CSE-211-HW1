@@ -12,20 +12,6 @@ def main(file):
     # Gets each row from the text file.
     # Each row in the file is an element in a list
     # The list is returned
-    def getInput(file):
-        list = []
-        s = file.readline()
-        while s != "":
-            # split the line we read in and put it into a list
-            list.append(s.split())
-            s = file.readline()
-        file.close()
-
-        for i in list:
-            print(i)
-
-        return list
-
     # 20% quizzes, 30% homework, 50% exams
 
     def getCourseAvg(student):
@@ -63,7 +49,7 @@ def main(file):
 
         return list
 
-    listB = getInput(open("studentGrades.txt"))
+    listB = FileIO.input(open("studentGrades.txt"))
 
     newList = []
     k = 0
