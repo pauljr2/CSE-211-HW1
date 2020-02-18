@@ -5,7 +5,8 @@ def main(file):
     # input file methods
     inputList = FileIO.input(file) # List that will be used to make computations
 
-    # Calculates course average based on this weighting scale:
+    # Calculates and returns the overall course average grade based on this weighting scale
+    # Quizzes - 20% | Homework - 30% | Exams - 50%
     def getCourseAvg(student):
         avg = 0
         avg = ((int(student[1]) + int(student[2]) + int(student[3])) / 3) * .20
@@ -15,6 +16,7 @@ def main(file):
         # print(avg)
         return avg
 
+    # Returns a letter grade based on the previously calculated overall course average
     def getLetterGrade(number):
         if number >= 90:
             return 'A'
@@ -27,10 +29,11 @@ def main(file):
         elif number < 60:
             return 'F'
 
+    # Returns a new list populated with student name, overall course average grade, and letter grade
     def populateList(listB):
 
         list = []
-        # add the name
+        # add the student name
         list.append(listB[0])
 
         # getCourseAvg
@@ -53,7 +56,7 @@ def main(file):
         print(x)
 
     # Output file method
-    FileIO.output(newList) # Not implemented yet - enter list name as arg
+    FileIO.output(newList)
 
 file = open("studentGrades.txt")
 main(file)
