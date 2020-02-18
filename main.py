@@ -45,13 +45,14 @@ def main(file):
         return list
 
     listB = FileIO.input(open("studentGrades.txt"))
-
+    
     newList = []
     k = 0
     for x in listB:
         newList.append(populateList(listB[k]))
         k += 1
 
+    # Remove?
     for x in newList:
         print(x)
 
