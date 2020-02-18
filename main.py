@@ -52,11 +52,7 @@ def main(file):
         newList.append(populateList(listB[k]))
         k += 1
 
-    # Remove?
-    for x in newList:
-        print(x)
-
-    # Output file method
+    # Output file with updated course averages
     FileIO.output(newList)
 
 file = open("studentGrades.txt")
