@@ -4,16 +4,8 @@ from FileIO import FileIO
 def main(file):
     # input file methods
     inputList = FileIO.input(file) # List that will be used to make computations
-    # Prints the list elements // For testing purposes
-    for i in inputList:
-        print(i)
-    # Computations
 
-    # Gets each row from the text file.
-    # Each row in the file is an element in a list
-    # The list is returned
-    # 20% quizzes, 30% homework, 50% exams
-
+    # Calculates course average based on this weighting scale:
     def getCourseAvg(student):
         avg = 0
         avg = ((int(student[1]) + int(student[2]) + int(student[3])) / 3) * .20
