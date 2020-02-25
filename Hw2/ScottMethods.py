@@ -14,10 +14,10 @@ class ScottMethods:
             i = i + 1
         return endString
 
-    #This method takes in an entry
+    # This method takes in an entry
     """
     This formats a muti-line string. For example,
-    
+
     Journal
     Key: Kiper1996
     Author: James Kiper
@@ -27,8 +27,9 @@ class ScottMethods:
     Date: 1996
     Volume: 8
     Number: 2
-    
+
     """
+
     def getKeyValue(string):
         # Puts each line in list
         lines = string.split("\n")
@@ -47,18 +48,39 @@ class ScottMethods:
         if lines[0] == "Journal":
             # result[1] is the string or the value of the dictionary
             result[1] = result[1] + ScottMethods.JournalHelper(lines)
+        #Book Case:
+        elif lines[0] == "Book":
+            result[1] = result[1] + ScottMethods.BookHelper(lines)
+        #Conference Case:
+        elif lines[0] == "Conference":
+            result[1] = result[1] + ScottMethods.ConferenceHelper(lines)
+        
         return result
-
-
-    # Returns the second part of the string in the dictionary value
+    
+    # Returns the second part of a journal string as dictionary value
     def JournalHelper(list):
-        string = ""
-        # Gets the values without the leading "...: "
         journal = str.replace(list[4], "Journal: ", "", 1)
         publisher = str.replace(list[5], "Publisher: ", "", 1)
         volume = str.replace(list[7], "Volume: ", "", 1)
         number = str.replace(list[8], "Number: ", "", 1)
         date = str.replace(list[6], "Date: ", "", 1)
         # Places them in order and formats the journal info
-        string = ", " + journal + ", " + publisher + ":" + volume + "(" + number + "), " + date
-        return string
+        jstring = ", " + journal + ", " + publisher + ":" + volume + "(" + number + "), " + date + "."
+        return jstring
+
+    #Returns the second part of a book string as dictionary value
+    def BookHelper(list):
+        publisher = str.replace(list[4], "Publisher: ", "", 1)
+        date = str.replace(list[5], "Date: ", "", 1)
+        # Places them in order and formats the journal info
+        bstring = ", " + publisher + ", " + date + "."
+        return bstring
+
+    def ConferenceHelper(list):
+        conference = str.replace(list[4], "Journal: ", "", 1)
+        date = str.replace(list[5], "Publisher: ", "", 1)
+        location = str.replace(list[6], "Volume: ", "", 1)
+        pages = str.replace(list[7], "Number: ", "", 1)
+        # Places them in order and formats the journal info
+        cstring = ", " + conference + ", " + date + ", " + location + ", " + pages + "."
+        return cstring
