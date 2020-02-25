@@ -54,9 +54,9 @@ class ScottMethods:
         #Conference Case:
         elif lines[0] == "Conference":
             result[1] = result[1] + ScottMethods.ConferenceHelper(lines)
-        
+
         return result
-    
+
     # Returns the second part of a journal string as dictionary value
     def JournalHelper(list):
         journal = str.replace(list[4], "Journal: ", "", 1)
@@ -77,10 +77,10 @@ class ScottMethods:
         return bstring
 
     def ConferenceHelper(list):
-        conference = str.replace(list[4], "Journal: ", "", 1)
-        date = str.replace(list[5], "Publisher: ", "", 1)
-        location = str.replace(list[6], "Volume: ", "", 1)
-        pages = str.replace(list[7], "Number: ", "", 1)
+        conference = str.replace(list[4], "Conference: ", "", 1)
+        date = str.replace(list[5], "Date: ", "", 1)
+        location = str.replace(list[6], "Location: ", "", 1)
+        pages = str.replace(list[7], "Pages: ", "", 1)
         # Places them in order and formats the journal info
         cstring = ", " + conference + ", " + date + ", " + location + ", " + pages + "."
         return cstring
