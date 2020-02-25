@@ -123,6 +123,14 @@ with open("Step3Data.txt") as fp:
             dict[getKeyValue(conference_str)[0]] = getKeyValue(conference_str)[1]
             conference_str = ""
 
-    for key,value in dict.items():
-        print(key + "        " + value)
+
+print("Please enter key: ")
+input_key = input()
+
+if input_key in dict:
+    print(input_key + "        " + dict.get(input_key, "none"))
+else:
+    print("Sorry, this key isn't in the dictionary. Try another one.")
+
+
 
