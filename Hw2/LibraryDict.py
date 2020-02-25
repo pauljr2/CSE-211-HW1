@@ -1,4 +1,4 @@
-# Names
+# CSE 211 | Homework 2 | Team 11
 
 # Format author names
 def formatNames(message):
