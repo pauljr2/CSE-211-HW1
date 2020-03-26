@@ -81,9 +81,14 @@ public class TurtleSoup {
      */
     public static double calculateHeadingToPoint(double currentHeading, int currentX, int currentY,
                                                  int targetX, int targetY) {
-        int resultY = (currentY - targetY)
-        int resultX = (currentX - targetX)
-        return Math.atan2(resultY, resultX) * 180 / Math.PI;
+        int resultY = (targetY - currentY);
+        int resultX = (targetX - currentX);
+        double northAngle = Math.atan2(resultX, resultY) * 180 / Math.PI;
+        double angle = northAngle - currentHeading;
+        if(angle < 0){
+            angle += 360;
+        }
+        return angle;
     }
 
     /**
@@ -100,7 +105,15 @@ public class TurtleSoup {
      * @return list of heading adjustments between points, of size (# of points) - 1.
      */
     public static List<Double> calculateHeadings(List<Integer> xCoords, List<Integer> yCoords) {
-        throw new RuntimeException("implement me!");
+        List<Double> coordChanges = new ArrayList<Double>();
+        int numCoords = xCoords.size();
+        double currentHeading = 0;
+        for(int i = 1; i < numCoords; i++){
+            double adjust = calculateHeadingToPoint(currentHeading, xCoords.get(i-1), yCoords.get(i-1), xCoords.get(i), xCoords.get(i));
+            currentHeading += adjust;
+            coordChanges.add(adjust);
+        }
+        return coordChanges;
     }
 
     /**
