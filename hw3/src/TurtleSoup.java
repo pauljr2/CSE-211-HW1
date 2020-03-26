@@ -177,7 +177,7 @@ public class TurtleSoup {
     public static void main(String args[]) {
         DrawableTurtle turtle = new DrawableTurtle();
 
-        //drawSquare(turtle, 40);
+        drawSquare(turtle, 40);
 
         drawPersonalArt(turtle);
 
