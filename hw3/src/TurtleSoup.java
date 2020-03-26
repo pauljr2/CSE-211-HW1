@@ -1,3 +1,4 @@
+
 /* Copyright (c) 2007-2014 MIT 6.005 course staff, all rights reserved.
  * Redistribution of original or derived work requires permission of course staff.
  */
@@ -46,7 +47,9 @@ public class TurtleSoup {
      * @return the integer number of sides
      */
     public static int calculatePolygonSidesFromAngle(double angle) {
-        throw new RuntimeException("implement me!");
+    	int sides = 0;   
+        sides = (int)(360.0/(180.0 - angle)+ .001); //rounding error
+        return sides;
     }
 
     /**
@@ -59,7 +62,12 @@ public class TurtleSoup {
      * @param sideLength length of each side
      */
     public static void drawRegularPolygon(Turtle turtle, int sides, int sideLength) {
-        throw new RuntimeException("implement me!");
+    	for(int i = 0; i < sides; i++) {
+        	
+        	turtle.forward(sideLength);
+        	turtle.turn(180-calculateRegularPolygonAngle(sides));
+        	
+        }
     }
 
     /**
@@ -177,7 +185,7 @@ public class TurtleSoup {
     public static void main(String args[]) {
         DrawableTurtle turtle = new DrawableTurtle();
 
-        drawSquare(turtle, 40);
+        //drawSquare(turtle, 40);
 
         drawPersonalArt(turtle);
 
