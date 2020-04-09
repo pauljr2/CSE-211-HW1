@@ -1,4 +1,3 @@
-package Q2;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -23,17 +22,21 @@ public class WordDealUtilTest {
 	{
 		System.out.println("Test Finish! Check Result");
 	}
+	
 	// Test wordEormat4DB with normal condition
 	@Test
-	public void wordEormat4DBNormal()
+	public void wordFormat4DBNormal()
 	{
-		// add code here
-	
+		// Q1 - test successfully passed
+		String target = "employee_info";
+		String result = wordDealUtil.wordFormat4DB("employeeInfo");
+		assertEquals(target, result);
 	}
 	// Test wordEormat4DB with normal condition
 	@Test
-	public void wordEormat4DBNull()
+	public void wordFormat4DBNull()
 	{
+		// Didn't pass test successfully
 		String target = null;
 		String result = wordDealUtil.wordFormat4DB(target);
 		assertNull(result);
@@ -41,29 +44,40 @@ public class WordDealUtilTest {
 	
 	// Test wordEormat4DB with empty string condition
 	@Test
-	public void wordEormat4DBEmpty()
+	public void wordFormat4DBEmpty()
 	{
-		//add code here
-	
+		// Q2 - test successfully passed
+		String target = "";
+		String result = wordDealUtil.wordFormat4DB("");
+		assertEquals(target, result);
 	}
 	
 	// Test First character with upper case
 	@Test
-	public void wordEormat4DBBegin()
+	public void wordFormat4DBBegin()
 	{
-		//add code here
+		// Q3 - test successfully passed
+		String target = "employee_info";
+		String result = wordDealUtil.wordFormat4DB("employeeInfo");
+		assertEquals(target, result);
 	}
 	// Test Last character with upper case
 	@Test
-	public void wordEormat4DBEnd()
+	public void wordFormat4DBEnd()
 	{
-		//add code here
+		// Q4 - test successfully passed
+		String target = "employee_info_a";
+		String result = wordDealUtil.wordFormat4DB("employeeInfoA");
+		assertEquals(target, result);
 	}
 	// Test more than one character with upper case
 	@Test
-	public void wordEormat4DBTogether()
+	public void wordFormat4DBTogether()
 	{
-		//add code here
+		// Q5 - test successfully passed
+		String target = "employee_info_a";
+		String result = wordDealUtil.wordFormat4DB("employeeInfoA");
+		assertEquals(target, result);
 	}
 
 }
