@@ -36,7 +36,7 @@ public class WordDealUtilTest {
 	@Test
 	public void wordFormat4DBNull()
 	{
-		// Didn't pass test successfully
+		// Didn't pass test successfully - not mentioned in Exercise 04 assignment
 		String target = null;
 		String result = wordDealUtil.wordFormat4DB(target);
 		assertNull(result);
