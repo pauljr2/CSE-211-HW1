@@ -32,6 +32,7 @@ public class TurtleSoup {
 			resultingInteger = variables.get(variable);
 		}
 		else {
+			System.out.println(lastVariable + ": " + variable);
 			resultingInteger = Integer.parseInt(variable);
 		}
 		return resultingInteger;
@@ -54,13 +55,21 @@ public class TurtleSoup {
 		return lastTokenEver;
 	}
 	
-	private static String getBlockTokens(String beginToken) { // had to create this since the while loop caused problems when the while loop happened twice
+	private static String getBlockTokens(String beginToken , StringTokenizer blockTokens) { // had to create this since the while loop caused problems when the while loop happened twice
 		String blockTokensStr = beginToken;
 		String token = beginToken;
-		while (!token.equals("end")) {
-			token = nextToken();
+		Stack<String> blockBegins = new Stack<String>();
+		do {
+			if(token.equals("programEnd") || tokens.hasMoreElements() == false)
+				throw new NoEndException("A loop doesn't have an end");
+			if (token.equals("begin"))
+				blockBegins.add(beginToken);
+			else if(token.contentEquals("end"))
+				blockBegins.pop();
+			token = nextToken(blockTokens);
 			blockTokensStr = blockTokensStr + " " + token;
-		}
+		} while (blockBegins.size() > 1 || !token.equals("end"));
+		System.out.println(blockTokensStr);
 		return blockTokensStr;
 	}
 	
@@ -70,12 +79,18 @@ public class TurtleSoup {
     		begins.add(token);
     		break;
     	case "end":
-    		begins.pop();
+    		String begin = begins.pop();
+    		if (begin == null) {
+    			throw new NoBeginException("There is an end without a begin.");
+    		}
     		break;
     	case "loop":
-    		int count = nextInt();
-    		String beginToken = nextToken();
-    		String loopTokens = getBlockTokens(beginToken);
+    		int count = nextInt(blockTokens);
+    		String beginToken = nextToken(blockTokens);
+    		if (!beginToken.equals("begin")) {
+    			//throw exception
+    		}
+    		String loopTokens = getBlockTokens(beginToken, blockTokens);
     		for (int i = 1; i <= count; i++){
     			StringTokenizer loopTokenizer = new StringTokenizer(loopTokens);
     			String loopToken = "";
@@ -95,7 +110,7 @@ public class TurtleSoup {
 			break;
 		case "=":
 			String variableName = lastVariable;
-			variables.put(variableName, nextInt());
+			variables.put(variableName, nextInt(blockTokens));
 			break;
     	default: // Gets wrong tokens (nextToken is giving problems)
     		lastVariable = token;
@@ -118,12 +133,16 @@ public class TurtleSoup {
     		fileToString = fileToString + scan.nextLine() + "\n";
     	}
     	System.out.println(fileToString);
+    	scan.close();
 		tokens = new StringTokenizer(fileToString);
-		String lastToken = "";
+		String lastToken = runToken(nextToken());
+		if (!lastToken.equals("begin")) {
+			throw new NoBeginException("Turtle programs must start with a begin statement.");
+		}
+			
 		while(!lastToken.equals("programEnd")) {
 			lastToken = runToken(nextToken());
     	}
-		scan.close();
     }
 
     /**
@@ -139,6 +158,8 @@ public class TurtleSoup {
 			e.printStackTrace();
 		}
 		compileTurtleProgram(file);
+		if (begins.contains("begin"))
+			throw new NoEndException("There is a begin without an end!");
 		System.out.println("Last Token: " + lastTokenEver);
 		System.out.println("Variables used: " + variables);
 		System.out.println("Turtle actions: " + turtle.actionList);
