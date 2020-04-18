@@ -33,18 +33,16 @@ public class TurtleSoup {
 			resultingInteger = variables.get(variable);
 		}
 		else {
-			System.out.println(lastVariable + ": " + variable);
 			try {
 				resultingInteger = Integer.parseInt(variable);
 			} catch (Exception e) {
-				System.out.println(lastTokenEver);
 				if (lastTokenEver.equals("loop"))
-					throw new InvalidLoopStatementException(currentTokenEver + " is not defined! \r\nREMEMBER: loops are created using this grammar:\r\nloop ::= “loop” count block\r\ncount ::= NUMBER");
+					throw new InvalidLoopStatementException("Last token: " + lastTokenEver + "\r\n" + currentTokenEver + " is not defined! \r\nREMEMBER: loops are created using this grammar:\r\nloop ::= “loop” count block\r\ncount ::= NUMBER");
 				else if (lastTokenEver.equals("="))
 					throw new InvalidVariableDeclarationException("Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
     					+ "variable ::= STRING");
 				else
-					throw new InvalidMethodCallException(currentTokenEver + " is not defined! \r\nMethod " + lastTokenEver + " could not be called");
+					throw new InvalidMethodCallException("Last token: " + lastTokenEver + "\r\n" + currentTokenEver + " is not defined! \r\nMethod " + lastTokenEver + " could not be called");
 			}
 			
 		}
@@ -71,7 +69,7 @@ public class TurtleSoup {
 		Stack<String> blockBegins = new Stack<String>();
 		do {
 			if(token.equals("programEnd") || tokens.hasMoreElements() == false)
-				throw new NoEndException("A loop doesn't have an end");
+				throw new NoEndException("Last token: " + lastTokenEver + "\r\n" + "A loop doesn't have an end");
 			if (token.equals("begin"))
 				blockBegins.add(beginToken);
 			else if(token.contentEquals("end"))
@@ -79,7 +77,6 @@ public class TurtleSoup {
 			token = nextToken(blockTokens);
 			blockTokensStr = blockTokensStr + " " + token;
 		} while (blockBegins.size() > 1 || !token.equals("end"));
-		System.out.println(blockTokensStr);
 		return blockTokensStr;
 	}
 	
@@ -90,14 +87,14 @@ public class TurtleSoup {
     		break;
     	case "end":
     		if (begins.isEmpty())
-    			throw new NoBeginException("There is an end without a begin!");
-    		String begin = begins.pop();
+    			throw new NoBeginException("Last token: " + lastTokenEver + "\r\n" + "There is an end without a begin!");
+    		begins.pop();
     		break;
     	case "loop":
     		int count = nextInt(blockTokens);
     		String beginToken = nextToken(blockTokens);
     		if (!beginToken.equals("begin"))
-    			throw new NoBeginException("There is an end without a begin!");
+    			throw new NoBeginException("Last token: " + lastTokenEver + "\r\n" + "There is an end without a begin!");
     		String loopTokens = getBlockTokens(beginToken, blockTokens);
     		for (int i = 1; i <= count; i++){
     			StringTokenizer loopTokenizer = new StringTokenizer(loopTokens);
@@ -118,13 +115,22 @@ public class TurtleSoup {
 			break;
 		case "=":
 			String variableName = lastVariable;
-			variables.put(variableName, nextInt(blockTokens));
-			break;
+			try {
+				Integer.parseInt(variableName);
+				throw new InvalidVariableDeclarationException();
+			} catch (Exception e) {
+				if(e.getClass() == InvalidVariableDeclarationException.class){
+					throw new InvalidVariableDeclarationException("Last token: " + lastTokenEver + "\r\n" + "Numbers cannot be variables! Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
+	    					+ "variable ::= STRING");
+				}
+				variables.put(variableName, nextInt(blockTokens));
+				break;
+			}
     	default: // Gets wrong tokens (nextToken is giving problems)
     		lastVariable = token;
     		String equalSign = nextToken(blockTokens);
     		if (!equalSign.equals("="))
-    			throw new InvalidVariableDeclarationException("Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
+    			throw new InvalidVariableDeclarationException("Last token: " + lastTokenEver + "\r\n" + "Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
     					+ "variable ::= STRING");
     		else
     			runToken(equalSign,blockTokens);
@@ -146,12 +152,11 @@ public class TurtleSoup {
     	while (scan.hasNextLine()) {
     		fileToString = fileToString + scan.nextLine() + "\n";
     	}
-    	System.out.println(fileToString);
     	scan.close();
 		tokens = new StringTokenizer(fileToString);
 		String lastToken = runToken(nextToken());
 		if (!lastToken.equals("begin")) {
-			throw new NoBeginException("Turtle programs must start with a begin statement.");
+			throw new NoBeginException("Last token: " + lastTokenEver + "\r\n" + "Turtle programs must start with a begin statement.");
 		}
 			
 		while(!lastToken.equals("programEnd")) {
@@ -173,10 +178,9 @@ public class TurtleSoup {
 		}
 		compileTurtleProgram(file);
 		if (begins.contains("begin"))
-			throw new NoEndException("There is a begin without an end!");
-		System.out.println("Last Token: " + lastTokenEver);
-		System.out.println("Variables used: " + variables);
-		System.out.println("Turtle actions: " + turtle.actionList);
+			throw new NoEndException("Last token: " + lastTokenEver + "\r\n" + "There is a begin without an end!");
+		System.out.println(turtle.actionList);
+		// draw the turtle
 		turtle.draw();
     }
 }
