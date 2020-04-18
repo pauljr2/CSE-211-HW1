@@ -47,9 +47,9 @@ public class TurtleSoup {
 				resultingInteger = Integer.parseInt(variable);
 			} catch (Exception e) {
 				if (lastTokenEver.equals("loop"))
-					throw new InvalidLoopStatementException("Last token: " + lastTokenEver + "\r\n" + currentTokenEver + " is not defined! \r\nREMEMBER: loops are created using this grammar:\r\nloop ::= “loop” count block\r\ncount ::= NUMBER");
+					throw new InvalidLoopStatementException("Last token: " + lastTokenEver + "\r\n" + currentTokenEver + " is not defined! \r\nREMEMBER: loops are created using this grammar:\r\nloop ::= “loop�? count block\r\ncount ::= NUMBER");
 				else if (lastTokenEver.equals("="))
-					throw new InvalidVariableDeclarationException("Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
+					throw new InvalidVariableDeclarationException("Variables are declared using this grammar:\r\nassignment ::= variable “=�? NUMBER\r\n" 
     					+ "variable ::= STRING");
 				else
 					throw new InvalidMethodCallException("Last token: " + lastTokenEver + "\r\n" + currentTokenEver + " is not defined! \r\nMethod " + lastTokenEver + " could not be called");
@@ -154,7 +154,7 @@ public class TurtleSoup {
 					throw new InvalidVariableDeclarationException();
 				} catch (Exception e) {
 					if(e.getClass() == InvalidVariableDeclarationException.class){
-						throw new InvalidVariableDeclarationException("Last token: " + lastTokenEver + "\r\n" + "Numbers cannot be variables! Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
+						throw new InvalidVariableDeclarationException("Last token: " + lastTokenEver + "\r\n" + "Numbers cannot be variables! Variables are declared using this grammar:\r\nassignment ::= variable “=�? NUMBER\r\n" 
 		    					+ "variable ::= STRING");
 					}
 					variables.put(variableName, nextInt(blockTokens));
@@ -164,7 +164,7 @@ public class TurtleSoup {
 	    		lastVariable = token;
 	    		String equalSign = nextToken(blockTokens);
 	    		if (!equalSign.equals("="))
-	    			throw new InvalidVariableDeclarationException("Last token: " + lastTokenEver + "\r\n" + "Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
+	    			throw new InvalidVariableDeclarationException("Last token: " + lastTokenEver + "\r\n" + "Variables are declared using this grammar:\r\nassignment ::= variable “=�? NUMBER\r\n" 
 	    					+ "variable ::= STRING");
 	    		else
 	    			runToken(equalSign,blockTokens);
