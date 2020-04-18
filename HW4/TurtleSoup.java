@@ -219,8 +219,11 @@ public class TurtleSoup {
 		compileTurtleProgram(file);
 		if (begins.contains("begin"))
 			throw new NoEndException("Last token: " + lastTokenEver + "\r\n" + "There is a begin without an end!");
-		System.out.println(turtle.actionList);
 		turtle.draw();
 		return turtle.actionList;
+    }
+    
+    public static void main(String[] args) {
+    	runTurtleSoup("testProgramStep3.txt");
     }
 }
