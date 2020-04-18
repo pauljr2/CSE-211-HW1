@@ -22,6 +22,7 @@ public class TurtleSoup {
 	private static Stack<String> begins;
 	private static StringTokenizer tokens;
 	private static DrawableTurtle turtle;
+	private static String currentTokenEver = "";
 	private static String lastTokenEver = "";
 	private static String lastVariable = "";
     
@@ -33,13 +34,21 @@ public class TurtleSoup {
 		}
 		else {
 			System.out.println(lastVariable + ": " + variable);
-			resultingInteger = Integer.parseInt(variable);
+			try {
+				resultingInteger = Integer.parseInt(variable);
+			} catch (Exception e) {
+				System.out.println(lastTokenEver);
+				if (lastTokenEver.equals("loop"))
+					throw new InvalidLoopStatementException(currentTokenEver + " is not defined! \r\nREMEMBER: loops are created using this grammar:\r\nloop ::= “loop” count block\r\ncount ::= NUMBER");
+				else if (lastTokenEver.equals("="))
+					throw new InvalidVariableDeclarationException("Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
+    					+ "variable ::= STRING");
+				else
+					throw new InvalidMethodCallException(currentTokenEver + " is not defined! \r\nMethod " + lastTokenEver + " could not be called");
+			}
+			
 		}
 		return resultingInteger;
-	}
-	
-	private static Integer nextInt() {
-		return nextInt(tokens);
 	}
 	
 	private static Double nextDouble(StringTokenizer blockTokens) {
@@ -47,12 +56,13 @@ public class TurtleSoup {
 	}
 	
 	private static String nextToken(StringTokenizer blockTokens){
-		return blockTokens.nextToken();
+		lastTokenEver = currentTokenEver;
+		currentTokenEver = blockTokens.nextToken();
+		return currentTokenEver;
 	}
 	
 	private static String nextToken() {
-		lastTokenEver = nextToken(tokens);
-		return lastTokenEver;
+		return nextToken(tokens);
 	}
 	
 	private static String getBlockTokens(String beginToken , StringTokenizer blockTokens) { // had to create this since the while loop caused problems when the while loop happened twice
@@ -79,23 +89,21 @@ public class TurtleSoup {
     		begins.add(token);
     		break;
     	case "end":
+    		if (begins.isEmpty())
+    			throw new NoBeginException("There is an end without a begin!");
     		String begin = begins.pop();
-    		if (begin == null) {
-    			throw new NoBeginException("There is an end without a begin.");
-    		}
     		break;
     	case "loop":
     		int count = nextInt(blockTokens);
     		String beginToken = nextToken(blockTokens);
-    		if (!beginToken.equals("begin")) {
-    			//throw exception
-    		}
+    		if (!beginToken.equals("begin"))
+    			throw new NoBeginException("There is an end without a begin!");
     		String loopTokens = getBlockTokens(beginToken, blockTokens);
     		for (int i = 1; i <= count; i++){
     			StringTokenizer loopTokenizer = new StringTokenizer(loopTokens);
     			String loopToken = "";
     			while (!loopToken.equals("end")) {
-    				loopToken = runToken(loopTokenizer.nextToken(), loopTokenizer);
+    				loopToken = runToken(nextToken(loopTokenizer), loopTokenizer);
     			}
     		}
     		break;
@@ -114,6 +122,12 @@ public class TurtleSoup {
 			break;
     	default: // Gets wrong tokens (nextToken is giving problems)
     		lastVariable = token;
+    		String equalSign = nextToken(blockTokens);
+    		if (!equalSign.equals("="))
+    			throw new InvalidVariableDeclarationException("Variables are declared using this grammar:\r\nassignment ::= variable “=” NUMBER\r\n" 
+    					+ "variable ::= STRING");
+    		else
+    			runToken(equalSign,blockTokens);
     		break;
     	}
     	return token;
